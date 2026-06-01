@@ -1,0 +1,114 @@
+import React, { useState } from 'react';
+import { AlertCircle, FileText, HelpCircle, Info } from 'lucide-react';
+import LymphographyForm from './components/LymphographyForm';
+import ResultDisplay from './components/ResultDisplay';
+import { LymphographyData, ClassificationResult } from './types';
+import { classifyLymphography } from './utils/classifier';
+
+function App() {
+  const [result, setResult] = useState<ClassificationResult | null>(null);
+  const [showInfo, setShowInfo] = useState(false);
+
+  const handleClassify = (data: LymphographyData) => {
+    const classificationResult = classifyLymphography(data);
+    setResult(classificationResult);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <FileText className="h-6 w-6 text-blue-600" />
+            <h1 className="text-xl font-bold text-gray-900">Lymphography Classification</h1>
+          </div>
+          <button 
+            onClick={() => setShowInfo(!showInfo)}
+            className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            <Info className="h-4 w-4 mr-1" />
+            Info
+          </button>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+        {showInfo && (
+          <div className="mb-6 bg-white shadow sm:rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <HelpCircle className="h-6 w-6 text-blue-500" />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900">About Lymphography Classification</h3>
+                  <div className="mt-2 text-sm text-gray-500">
+                    <p className="mb-2">
+                      Lymphography is a diagnostic imaging technique used to examine the lymphatic system. 
+                      This application helps classify lymph node pathology based on various features observed in lymphography.
+                    </p>
+                    <p className="mb-2">
+                      The classification is based on a decision tree algorithm that analyzes various lymph node characteristics 
+                      to predict one of four classes:
+                    </p>
+                    <ul className="list-disc pl-5 mb-2">
+                      <li>Normal finding</li>
+                      <li>Metastases</li>
+                      <li>Malignant lymphoma</li>
+                      <li>Fibrosis</li>
+                    </ul>
+                    <p>
+                      <strong>Note:</strong> This is a demonstration tool and should not be used for actual medical diagnosis.
+                      Always consult with healthcare professionals for proper medical advice.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="px-4 py-5 sm:px-6 bg-blue-50">
+              <h2 className="text-lg leading-6 font-medium text-gray-900">Lymphography Features</h2>
+              <p className="mt-1 max-w-2xl text-sm text-gray-500">Enter the observed features from the lymphography examination.</p>
+            </div>
+            <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
+              <LymphographyForm onSubmit={handleClassify} />
+            </div>
+          </div>
+
+          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="px-4 py-5 sm:px-6 bg-blue-50">
+              <h2 className="text-lg leading-6 font-medium text-gray-900">Classification Result</h2>
+              <p className="mt-1 max-w-2xl text-sm text-gray-500">The predicted class based on the provided features.</p>
+            </div>
+            <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
+              {result ? (
+                <ResultDisplay result={result} />
+              ) : (
+                <div className="flex items-center justify-center h-64 text-gray-400">
+                  <div className="text-center">
+                    <AlertCircle className="mx-auto h-12 w-12" />
+                    <p className="mt-2">No classification result yet. Fill out the form to get a prediction.</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer className="bg-white mt-12 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-sm text-gray-500">
+            Lymphography Classification Tool - For educational purposes only
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
