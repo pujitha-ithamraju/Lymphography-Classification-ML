@@ -90,6 +90,26 @@ npm run dev
 * Add authentication and user management
 * Create a prediction analytics dashboard
 
+
+## Screenshots
+
+### Home Page
+
+![Home Page](screenshots/home_page.jpeg)
+
+### Filled Form
+
+![Filled Form](screenshots/filled_form.jpeg)
+
+### Prediction Result
+
+![Prediction Result](screenshots/prediction_page.jpeg)
+
+
+
 ## Project Goal
 
 This project was developed to demonstrate the practical application of Machine Learning in healthcare-related classification problems while gaining experience in full-stack AI application development.
+
+
+
